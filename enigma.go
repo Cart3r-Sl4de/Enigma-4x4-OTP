@@ -95,8 +95,9 @@ func ceasarOutput(mode byte, ceasar_salad_query map[int]string) {
 	var ceasar_output string
 
 	//output generation
-	for position := 1; position <= 26; position++ {
-		ceasar_output += strconv.Itoa(position) + ": " + ceasar_salad_query[position] + "\n"
+	for position := 0; position < 26; position++ {
+    //LetterNumber(AlphabetInOrder): RotatedAlphabet
+    ceasar_output += fmt.Sprintf("%s(%s): %s\n", strconv.Itoa(position + 1), string(alphabet[position]), ceasar_salad_query[position])
 	}
 
 	//print mode
@@ -113,21 +114,16 @@ func ceasarOutput(mode byte, ceasar_salad_query map[int]string) {
 func ceasarGenerator(spaces int) {
 
 	ceasar_salad := make(map[int]string)
-	var yes_or_no string
-	placement := 1
-	for counter := 0; counter <= 25; counter++ {
-
-		placement = counter + spaces
-		if placement > 26 {
-			placement = placement % 26
-		}
-
-		ceasar_salad[placement] = string(alphabet[counter])
+	for counter := 0; counter < 26; counter++ {
+    
+    placement := (counter + spaces) % len(alphabet)
+		ceasar_salad[counter] = string(alphabet[placement])
 
 	}
 
 	ceasarOutput('p', ceasar_salad)
 
+  var yes_or_no string
 	fmt.Println("\nNow, might you want to export this ceaser script to a txt file? (y/n)")
 	fmt.Scanln(&yes_or_no)
 
