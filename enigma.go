@@ -110,16 +110,16 @@ func ceasarOutput(mode byte, ceasar_salad_query map[int]string) {
 }
 
 // generate ceasar cipher
-func ceasarGenerator(og_alphabet map[int]string, spaces int) {
+func ceasarGenerator(spaces int) {
 
 	ceasar_salad := make(map[int]string)
 	var yes_or_no string
-	placement := 0
+	placement := 1
 	for counter := 0; counter <= 25; counter++ {
 
 		placement = counter + spaces
 		if placement > 26 {
-			placement = placement - 26
+			placement = placement % 26
 		}
 
 		ceasar_salad[placement] = string(alphabet[counter])
@@ -193,9 +193,9 @@ func fourByFourGenerator(result *[12][12]string) {
 			rand.Seed(time.Now().UnixNano())
 			randomized = pseudorandom()
 		}
-		for letters := 1; letters < 27; letters++ {
+		for letters := 1; letters <= 26; letters++ {
 			//if we reached the letter J, skip it
-			if letters == 10 && square < 3 {
+			if letters == 10 && square <= 2 {
 				letters++
 			}
 			//in terms of the right-hand blocks, at the end of the block go to the next line
@@ -208,7 +208,7 @@ func fourByFourGenerator(result *[12][12]string) {
 			}
 
 			//if non-randomized groups (1 and 2)
-			if square < 3 {
+			if square <= 2 {
 				result[row][column] = strings.ToLower(string(alphabet[letters-1]))
 			} else { //if randomized groups
 				if string(randomized[letters]) == "J" {
@@ -228,7 +228,7 @@ func main() {
 	var cipher, confirmation string
 	var amt_of_spaces int
 	rand.Seed(time.Now().UnixNano())
-	alphabetDict := make(map[int]string)
+	//alphabetDict := make(map[int]string)
 	var four_by_four_result [12][12]string
 
 	fmt.Println(enigma_art, "\nby Cyber Crusader\n\nFelicitations, partaker of Cryptography! May I ask if you are in the mood for:\na)Ceasar Cipher\nb)4x4 Square")
@@ -240,7 +240,7 @@ func main() {
 
 		fmt.Println("How many spaces do you want to make the alphabet skip?")
 		amt_of_spaces = inputCheckerInt()
-		ceasarGenerator(alphabetDict, amt_of_spaces)
+		ceasarGenerator(amt_of_spaces)
 		//below is if the cipher chosen is the 4x4
 	} else if cipher == "b" {
 		fourByFourGenerator(&four_by_four_result)
